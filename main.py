@@ -1,7 +1,7 @@
 from flask import Flask, request, render_template
 from proj import call_process
 
-app = Flask()
+app = Flask(__name__)
 
 
 @app.route("/post", methods="POST")
