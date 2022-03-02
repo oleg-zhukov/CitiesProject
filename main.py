@@ -4,7 +4,7 @@ from proj import call_process
 app = Flask(__name__)
 
 
-@app.route("/post", methods="POST")
+@app.route("/post", methods=["POST"])
 def index():
     return call_process(request)
 
