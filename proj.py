@@ -182,9 +182,20 @@ def dialog(req, res):
         print("New user")
         res['response']['text'] = 'Давайте сыграем в города. Вы начинаете'
         return
-    msg = sessionStorage[user_id]['message'] = req['request']['original_utterance'].lower()
-    town = sessionStorage[user_id]['towns_left'][msg[-1]][random.randint(0, len(sessionStorage[user_id]['towns_left'][msg[-1]]))]
+    msg = sessionStorage[user_id]['message'] = req['request']['original_utterance']
+
+    letter = msg.lower()[-1]
+    town = sessionStorage[user_id]['towns_left'][letter][
+        random.randint(0, len(sessionStorage[user_id]['towns_left'][letter]))]
     print(town)
-    erase(town, sessionStorage[user_id]['towns_left'])
-    res['response']['text'] = town
-    return
+    if msg in towns[letter] and msg not in sessionStorage[user_id]['towns_left'][letter]:
+        res['response']['text'] = "Вы уже называли данный город или его другое название"
+        return
+    elif msg not in towns[letter]:
+        res['response']['text'] = "Такой город я не знаю. Назовите другой"
+        return
+    else:
+        erase(msg, sessionStorage[user_id]['towns_left'])
+        erase(town, sessionStorage[user_id]['towns_left'])
+        res['response']['text'] = town
+        return
